@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primaryColor: #6d28d9;
+    --secondaryColor: #ede9fe;
+    --mainWhite: #fff;
+    --mainBlack: #222;
+    --mainGrey: #7c7c7c;
+    --mainSpacing: 0.1rem;
+    --mainTransition: all 0.3s linear;
+    --mainRed: #db2777;
+    --bodyColor: #f6f6f6;
+}
+
+body{
+    color: var(--mainBlack);
+    font-family: "Lato", sans-serif;
+    background-color: var(--bodyColor);
+    position: relative;
+}
+
+.navbar-container{
+    display: flex;
+    justify-content: center;
+    height: 60px;
+    background: var(--secondaryColor);
+    align-items: center;
+
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    max-width: 1170px;
+    width: 100%;
+
+}
+
+.nav-title{
+    color: var(--mainBlack);
+    font-size: 1.2rem;
+}
+
+.menu-icon i, .cart-icon i{
+    color: var(--primaryColor);
+    font-size: 1.5rem;
+}
+
+.menu-icon{
+    cursor: pointer;
+}
+
+.cart-icon{
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-items{
+    width: 20px;
+    height: 20px;
+    background-color: var(--mainRed);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -12px;
+    right: -15px;
+    color: var(--mainWhite);
+    font-size: 0.75rem;
+}
