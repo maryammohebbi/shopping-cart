@@ -3,6 +3,9 @@ const backdrop = document.querySelector(".backdrop");
 const myCart = document.querySelector(".cart");
 const productsDOM = document.querySelector(".products-center");
 
+const cartTotal = document.querySelector(".cart-total");
+const cartItems = document.querySelector(".cart-items");
+
 let cart = [];
 
 import {productsData} from "./products.js";
@@ -60,9 +63,23 @@ class UI {
                 cart = [...cart, {...addedProduct, quantity: 1}]; // sabad kharid ro update kardim
                 //save cart to local storage:
                 Storage.saveCart(cart); // sababd kharid ro save kardim
-
+                // update cart value:
+                this.setCartValue(cart);
+                //add to cart items:
             })
         })
+    }
+
+    setCartValue(cart){
+        // 1. cart items:
+        // 2. cart total price:
+        let tempCartItems = 0;
+        const totalPrice = cart.reduce((acc, curr)=>{
+            tempCartItems += curr.quantity;
+            return acc + curr.quantity * curr.price;
+        }, 0);
+        cartTotal.innerText = `Total Price: ${totalPrice.toFixed(2)} $ `;
+        cartItems.innerText = tempCartItems;
     }
 }
 
