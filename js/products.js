@@ -24,7 +24,7 @@ export const productsData = [
         id: 4,
         title: "new brown bed",
         price: 13.21,
-        imageUrl: "../images/product-3.jpeg",
+        imageUrl: "../images/product-4.jpeg",
     },
 
     {
