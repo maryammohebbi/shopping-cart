@@ -8,6 +8,8 @@ const cartItems = document.querySelector(".cart-items");
 
 const cartContent = document.querySelector(".cart-content");
 
+const cartClear = document.querySelector(".clear-cart");
+
 let cart = [];
 
 import {productsData} from "./products.js";
@@ -49,7 +51,7 @@ class UI {
             const id = btn.dataset.id;
             // console.log(id)
             // check if this product id is in cart or not:
-            const isInCart = cart.find(p => p.id === id);
+            const isInCart = cart.find(p => p.id === parseInt(id));
             if (isInCart){
                 btn.innerText = "In Cart";
                 btn.disable = "true";
@@ -117,6 +119,22 @@ class UI {
         // 3. set values: price + items
         this.setCartValue(cart);
     }
+
+    cartLogic(){
+        cartClear.addEventListener("click", ()=>{
+            // remove: DRY =>
+            cart.forEach((cItem) => this.removeItem(cItem.id));
+        })
+    }
+
+    removeItem(id){
+        // update cart
+        cart = cart.filter((cItem) => cItem.id !== id);
+        // total price and cart items update
+        this.setCartValue(cart);
+        //update storage
+        Storage.saveCart(cart);
+    }
 }
 
 // 3. storage
@@ -151,6 +169,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     ui.setupApp();
     ui.displayProducts(productsData);
     ui.getAddToCartBtns();
+    ui.cartLogic();
     Storage.saveProducts(productsData);
 
 })

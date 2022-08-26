@@ -241,6 +241,10 @@ body{
     margin-right: 10px;
 }
 
+.btn{
+    cursor: pointer;
+}
+
 .clear-cart{
     background-color: var(--mainWhite);
     border: 1px solid var(--primaryColor);
