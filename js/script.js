@@ -11,6 +11,7 @@ const cartContent = document.querySelector(".cart-content");
 const cartClear = document.querySelector(".clear-cart");
 
 let cart = [];
+let buttonsDOM = [];
 
 import {productsData} from "./products.js";
 
@@ -43,11 +44,11 @@ class UI {
         });
     }
     getAddToCartBtns(){
-        const addToCartBtns = document.querySelectorAll(".add-to-cart");
+        const addToCartBtns = [...document.querySelectorAll(".add-to-cart")];
         // console.log(addToCartBtns);
-        const buttons = [...addToCartBtns];
-        // console.log(buttons);
-        buttons.forEach(btn => {
+        buttonsDOM = addToCartBtns;
+
+        addToCartBtns.forEach(btn => {
             const id = btn.dataset.id;
             // console.log(id)
             // check if this product id is in cart or not:
@@ -100,13 +101,13 @@ class UI {
         </div>
 
         <div class="cart-item-controler">
-            <i class="fa-solid fa-chevron-up"></i>
+            <i class="fa-solid fa-chevron-up" data-id = ${cartItem.id}></i>
             <p>${cartItem.quantity}</p>
-            <i class="fa-solid fa-chevron-down"></i>
+            <i class="fa-solid fa-chevron-down" data-id= ${cartItem.id}></i>
         </div>
 
         <div class="cart-item-delete">
-            <i class="fa-solid fa-trash"></i>
+            <i class="fa-solid fa-trash" data-id= ${cartItem.id}></i>
         </div>`;
         cartContent.appendChild(div);
     }
@@ -121,12 +122,19 @@ class UI {
     }
 
     cartLogic(){
-        cartClear.addEventListener("click", ()=>{
-            // remove: DRY =>
-            cart.forEach((cItem) => this.removeItem(cItem.id));
-        })
+        cartClear.addEventListener("click", ()=> this.clearCart());
     }
 
+    clearCart(){
+        // remove: DRY =>
+        cart.forEach((cItem) => this.removeItem(cItem.id));
+        // remove cart content children
+        // console.log(cartContent.children);
+        while(cartContent.children.length){
+            cartContent.removeChild(cartContent.children[0]);
+        }
+        closeCartModal();
+    }
     removeItem(id){
         // update cart
         cart = cart.filter((cItem) => cItem.id !== id);
@@ -134,6 +142,15 @@ class UI {
         this.setCartValue(cart);
         //update storage
         Storage.saveCart(cart);
+
+        // console.log(buttonsDOM);
+        this.getSingleButton(id);
+    }
+
+    getSingleButton(id){
+        const buttons = buttonsDOM.find(btn => parseInt(btn.dataset.id) === parseInt(id));
+        buttons.innerText = "add to cart";
+        buttons.disabled = false;
     }
 }
 
@@ -156,8 +173,6 @@ class Storage {
         
     }
 }
-
-
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
