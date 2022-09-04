@@ -106,9 +106,7 @@ class UI {
             <i class="fa-solid fa-chevron-down" data-id= ${cartItem.id}></i>
         </div>
 
-        <div class="cart-item-delete">
-            <i class="fa-solid fa-trash" data-id= ${cartItem.id}></i>
-        </div>`;
+        <i class="fa-solid fa-trash" data-id= ${cartItem.id}></i>`;
         cartContent.appendChild(div);
     }
 
@@ -122,7 +120,48 @@ class UI {
     }
 
     cartLogic(){
+        //clear cart
         cartClear.addEventListener("click", ()=> this.clearCart());
+
+        // cart functionality
+        cartContent.addEventListener("click", (event)=>{
+            // console.log(event.target);
+          if(event.target.classList.contains("fa-chevron-up")){
+            // console.log(event.target.dataset.id);
+            const addQuantity = event.target;
+            // console.log(addQuantity);
+
+            //1. get item fron cart:
+            const addedItem = cart.find(cItem => cItem.id == addQuantity.dataset.id);
+            addedItem.quantity++;
+
+            //2. update cart value:
+            this.setCartValue(cart);
+            
+            //3. save cart:
+            Storage.saveCart(cart);
+
+            //4. update cart item in UI:
+            addQuantity.nextElementSibling.innerText = addedItem.quantity;
+          } else if (event.target.classList.contains("fa-trash")){
+            const removeItem = event.target;
+            const _removedItem = cart.find(c => c.id == removeItem.dataset.id);
+            this.removeItem(_removedItem.id);
+            Storage.saveCart(cart);
+            cartContent.removeChild(removeItem.parentElement);
+          } else if (event.target.classList.contains("fa-chevron-down")){
+            const subQuantity = event.target;
+            const substractedItem = cart.find(c => c.id == subQuantity.dataset.id);
+            if(substractedItem.quantity === 1){
+                this.removeItem(substractedItem.id);
+                cartContent.removeChild(subQuantity.parentElement.parentElement)
+            }
+            substractedItem.quantity--;
+            this.setCartValue(cart);
+            Storage.saveCart(cart);
+            subQuantity.previousElementSibling.innerText = substractedItem.quantity;
+          }
+        })
     }
 
     clearCart(){
